@@ -70,6 +70,7 @@ func (mocean *Mocean) makeFormData(apiKey, apiSecret string) url.Values {
 	data.Set("mocean-api-key", apiKey)
 	data.Set("mocean-api-secret", apiSecret)
 	data.Set("mocean-resp-format", "JSON")
+	data.Set("mocean-medium", "GO-SDK")
 
 	return data
 }
