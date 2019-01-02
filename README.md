@@ -1,4 +1,4 @@
-MoceanAPI Client Library for PHP 
+MoceanAPI Client Library for [Go](https://golang.org/) 
 ============================
 
 This is the [Go](https://golang.org/) library for use Mocean's API. To use this, you'll need a Mocean account. Sign up [for free at 
