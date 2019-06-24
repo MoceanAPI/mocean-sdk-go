@@ -22,7 +22,7 @@ func (mocean *Mocean) Account() *AccountService {
 
 type BalanceResponse struct {
 	abstractResponse
-	Balance interface{} `json:"value"`
+	Value interface{} `json:"value"`
 }
 
 //Get Account Balance
@@ -43,12 +43,12 @@ func (s *AccountService) GetBalance(params url.Values) (balanceResponse *Balance
 type PricingResponse struct {
 	abstractResponse
 	Destinations []struct {
-		Country  string  `json:"country"`
-		Operator string  `json:"operator"`
-		Mcc      string  `json:"mcc"`
-		Mnc      string  `json:"mnc"`
-		Price    float64 `json:"price"`
-		Currency string  `json:"currency"`
+		Country  interface{} `json:"country"`
+		Operator interface{} `json:"operator"`
+		Mcc      interface{} `json:"mcc"`
+		Mnc      interface{} `json:"mnc"`
+		Price    interface{} `json:"price"`
+		Currency interface{} `json:"currency"`
 	} `json:"destinations"`
 }
 

@@ -19,21 +19,21 @@ func (mocean *Mocean) NumberLookup() *NumberLookupService {
 }
 
 type carrier struct {
-	Country     string `json:"country"`
-	Name        string `json:"name"`
-	NetworkCode int    `json:"network_code"`
-	Mcc         string `json:"mcc"`
-	Mnc         string `json:"mnc"`
+	Country     interface{} `json:"country"`
+	Name        interface{} `json:"name"`
+	NetworkCode interface{} `json:"network_code"`
+	Mcc         interface{} `json:"mcc"`
+	Mnc         interface{} `json:"mnc"`
 }
 
 type NumberLookupResponse struct {
 	abstractResponse
-	Msgid           string   `json:"msgid"`
-	To              string   `json:"to"`
-	CurrentCarrier  *carrier `json:"current_carrier"`
-	OriginalCarrier *carrier `json:"original_carrier"`
-	Ported          string   `json:"ported"`
-	Reachable       string   `json:"reachable"`
+	Msgid           interface{} `json:"msgid"`
+	To              interface{} `json:"to"`
+	CurrentCarrier  *carrier    `json:"current_carrier"`
+	OriginalCarrier *carrier    `json:"original_carrier"`
+	Ported          interface{} `json:"ported"`
+	Reachable       interface{} `json:"reachable"`
 }
 
 //Send verify code

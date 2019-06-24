@@ -36,7 +36,7 @@ func (res *abstractResponse) String() string {
 
 type ErrorResponse struct {
 	abstractResponse
-	ErrorMsg string `json:"err_msg"`
+	ErrorMsg interface{} `json:"err_msg"`
 }
 
 func NewMoceanClient(apiKey, apiSecret string) *Mocean {

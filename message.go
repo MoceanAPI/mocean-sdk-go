@@ -23,9 +23,9 @@ func (mocean *Mocean) Message() *MessageService {
 type SmsResponse struct {
 	abstractResponse
 	Messages []struct {
-		Status   int    `json:"status"`
-		Receiver string `json:"receiver"`
-		Msgid    string `json:"msgid"`
+		Status   interface{} `json:"status"`
+		Receiver interface{} `json:"receiver"`
+		Msgid    interface{} `json:"msgid"`
 	} `json:"messages"`
 }
 
@@ -46,9 +46,9 @@ func (s *MessageService) Send(params url.Values) (smsResponse *SmsResponse, err 
 
 type MsgStatusResponse struct {
 	abstractResponse
-	MessageStatus  int     `json:"message_status"`
-	Msgid          string  `json:"msgid"`
-	CreditDeducted float64 `json:"credit_deducted"`
+	MessageStatus  interface{} `json:"message_status"`
+	Msgid          interface{} `json:"msgid"`
+	CreditDeducted interface{} `json:"credit_deducted"`
 }
 
 //Get Message Status

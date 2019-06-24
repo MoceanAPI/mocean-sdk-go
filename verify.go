@@ -32,8 +32,9 @@ func (mocean *Mocean) Verify() *VerifyService {
 
 type SendCodeResponse struct {
 	abstractResponse
-	Reqid string `json:"reqid"`
-	To    string `json:"to"`
+	Reqid        interface{} `json:"reqid"`
+	To           interface{} `json:"to"`
+	ResendNumber interface{} `json:"resend_number"`
 }
 
 //Send verify code
@@ -65,7 +66,7 @@ func (s *VerifyService) SendCode(params url.Values) (sendCodeResponse *SendCodeR
 
 type VerifyCodeResponse struct {
 	abstractResponse
-	Reqid string `json:"reqid"`
+	Reqid interface{} `json:"reqid"`
 }
 
 //Verify code
