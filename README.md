@@ -63,7 +63,7 @@ For your convenient, the API response has been parsed to specific struct
 
 ```go
 fmt.Printf("res: %v", res)        // show full response string
-fmt.Printf("res: %s", res.Status) // show response status, "0" in this case
+fmt.Printf("res: %v", res.Status) // show response status, "0" in this case
 ```
 
 ## Documentation
