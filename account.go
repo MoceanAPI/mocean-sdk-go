@@ -1,61 +1,47 @@
-package moceango
+package moceansdk
 
 import (
 	"encoding/json"
-	"errors"
-	"io/ioutil"
-	"net/http"
+	"net/url"
 )
 
-type account struct {
-	*Mocean
-	GetBalanceUrl string
-	GetPricingUrl string
+type AccountService struct {
+	client     *Mocean
+	balanceUrl string
+	pricingUrl string
 }
 
 //Account Constructor
-func (mocean *Mocean) Account() *account {
-	return &account{
+func (mocean *Mocean) Account() *AccountService {
+	return &AccountService{
 		mocean,
-		mocean.BaseUrl + "/account/balance",
-		mocean.BaseUrl + "/account/pricing",
+		"/account/balance",
+		"/account/pricing",
 	}
 }
 
 type BalanceResponse struct {
-	Status  int     `json:"status"`
-	Balance float64 `json:"value"`
+	abstractResponse
+	Balance interface{} `json:"value"`
 }
 
 //Get Account Balance
 //For more info, see docs: https://moceanapi.com/docs/#get-balance
-func (account *account) getBalance() (balanceResponse *BalanceResponse, err error) {
-	formData := account.makeFormData(account.ApiKey, account.ApiSecret);
-	res, err := account.get(account.GetBalanceUrl + "?" + formData.Encode())
+func (s *AccountService) GetBalance(params url.Values) (balanceResponse *BalanceResponse, err error) {
+	res, err := s.client.get(s.balanceUrl, params)
 	if err != nil {
 		return balanceResponse, err
-	}
-
-	responseBody, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return balanceResponse, err
-	}
-
-	if res.StatusCode != http.StatusAccepted {
-		errRes := new(ErrorResponse)
-		err = json.Unmarshal(responseBody, errRes)
-
-		return balanceResponse, errors.New(errRes.ErrorMsg)
 	}
 
 	balanceResponse = new(BalanceResponse)
-	err = json.Unmarshal(responseBody, balanceResponse)
+	err = json.Unmarshal(res, balanceResponse)
 
+	balanceResponse.rawResponse = string(res)
 	return balanceResponse, err
 }
 
 type PricingResponse struct {
-	Status       int `json:"status"`
+	abstractResponse
 	Destinations []struct {
 		Country  string  `json:"country"`
 		Operator string  `json:"operator"`
@@ -68,27 +54,15 @@ type PricingResponse struct {
 
 //Get Account Pricing
 //For more info, see docs: https://moceanapi.com/docs/#account-pricing
-func (account *account) getPricing() (pricingResponse *PricingResponse, err error) {
-	formData := account.makeFormData(account.ApiKey, account.ApiSecret);
-	res, err := account.get(account.GetPricingUrl + "?" + formData.Encode())
+func (s *AccountService) GetPricing(params url.Values) (pricingResponse *PricingResponse, err error) {
+	res, err := s.client.get(s.pricingUrl, params)
 	if err != nil {
 		return pricingResponse, err
-	}
-
-	responseBody, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return pricingResponse, err
-	}
-
-	if res.StatusCode != http.StatusAccepted {
-		errRes := new(ErrorResponse)
-		err = json.Unmarshal(responseBody, errRes)
-
-		return pricingResponse, errors.New(errRes.ErrorMsg)
 	}
 
 	pricingResponse = new(PricingResponse)
-	err = json.Unmarshal(responseBody, pricingResponse)
+	err = json.Unmarshal(res, pricingResponse)
 
+	pricingResponse.rawResponse = string(res)
 	return pricingResponse, err
 }
