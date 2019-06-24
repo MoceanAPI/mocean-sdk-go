@@ -83,7 +83,7 @@ func (mocean *Mocean) post(url string, formData url.Values) ([]byte, error) {
 		errRes := new(ErrorResponse)
 		err = json.Unmarshal(responseBody, errRes)
 
-		return nil, errors.New(errRes.ErrorMsg)
+		return nil, errors.New(errRes.ErrorMsg.(string))
 	}
 
 	return responseBody, nil
@@ -112,7 +112,7 @@ func (mocean *Mocean) get(url string, formData url.Values) ([]byte, error) {
 		errRes := new(ErrorResponse)
 		err = json.Unmarshal(responseBody, errRes)
 
-		return nil, errors.New(errRes.ErrorMsg)
+		return nil, errors.New(errRes.ErrorMsg.(string))
 	}
 
 	return responseBody, nil
