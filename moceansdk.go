@@ -19,9 +19,10 @@ type Options struct {
 }
 
 type Mocean struct {
-	Options   *Options
-	apiKey    string
-	apiSecret string
+	Options    *Options
+	apiKey     string
+	apiSecret  string
+	sdkVersion string
 }
 
 type abstractResponse struct {
@@ -47,9 +48,14 @@ func NewMoceanClient(apiKey, apiSecret string) *Mocean {
 				Timeout: time.Second * 30,
 			},
 		},
-		apiKey:    apiKey,
-		apiSecret: apiSecret,
+		apiKey:     apiKey,
+		apiSecret:  apiSecret,
+		sdkVersion: "2.0.0",
 	}
+}
+
+func (mocean *Mocean) SdkVersion() string {
+	return mocean.sdkVersion
 }
 
 func (mocean *Mocean) post(url string, formData url.Values) ([]byte, error) {

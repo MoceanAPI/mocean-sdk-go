@@ -13,7 +13,7 @@ moceanapi.com][signup].
 To install the client
 
 ```bash
-go get "gopkg.in/MoceanAPI/mocean-sdk-go.v1"
+go get "gopkg.in/MoceanAPI/mocean-sdk-go.v2"
 ```
 
 ## Usage
@@ -21,7 +21,7 @@ go get "gopkg.in/MoceanAPI/mocean-sdk-go.v1"
 Create a client with your API key and secret
 
 ```go
-import "gopkg.in/MoceanAPI/mocean-sdk-go.v1"
+import "gopkg.in/MoceanAPI/mocean-sdk-go.v2"
 
 mocean := moceansdk.NewMoceanClient("apiKey", "apiSecret")
 ```
