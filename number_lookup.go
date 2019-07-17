@@ -10,7 +10,7 @@ type NumberLookupService struct {
 	numberLookupUrl string
 }
 
-//Verify Constructor
+//Number Lookup Constructor
 func (mocean *Mocean) NumberLookup() *NumberLookupService {
 	return &NumberLookupService{
 		mocean,
@@ -36,8 +36,8 @@ type NumberLookupResponse struct {
 	Reachable       interface{} `json:"reachable"`
 }
 
-//Send verify code
-//For more info, see docs: https://moceanapi.com/docs/#send-code
+//Request Number Lookup
+//For more info, see docs: https://moceanapi.com/docs/#request-number-lookup
 func (s *NumberLookupService) Inquiry(params url.Values) (numberLookupResponse *NumberLookupResponse, err error) {
 	res, err := s.client.post(s.numberLookupUrl, params)
 	if err != nil {
