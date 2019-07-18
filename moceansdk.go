@@ -13,7 +13,7 @@ import (
 )
 
 func SdkVersion() string {
-	return "2.0.1"
+	return "2.0.2"
 }
 
 type Options struct {
