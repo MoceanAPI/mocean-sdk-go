@@ -5,15 +5,15 @@ import (
 	"net/url"
 )
 
-type NumberLookupService struct {
-	client          *Mocean
+type numberLookupService struct {
+	client          *mocean
 	numberLookupUrl string
 }
 
 //Number Lookup Constructor
-func (mocean *Mocean) NumberLookup() *NumberLookupService {
-	return &NumberLookupService{
-		mocean,
+func (m *mocean) NumberLookup() *numberLookupService {
+	return &numberLookupService{
+		m,
 		"/nl",
 	}
 }
@@ -26,7 +26,7 @@ type carrier struct {
 	Mnc         interface{} `json:"mnc"`
 }
 
-type NumberLookupResponse struct {
+type numberLookupResponse struct {
 	abstractResponse
 	Msgid           interface{} `json:"msgid"`
 	To              interface{} `json:"to"`
@@ -38,15 +38,15 @@ type NumberLookupResponse struct {
 
 //Request Number Lookup
 //For more info, see docs: https://moceanapi.com/docs/#request-number-lookup
-func (s *NumberLookupService) Inquiry(params url.Values) (numberLookupResponse *NumberLookupResponse, err error) {
+func (s *numberLookupService) Inquiry(params url.Values) (response *numberLookupResponse, err error) {
 	res, err := s.client.post(s.numberLookupUrl, params)
 	if err != nil {
-		return numberLookupResponse, err
+		return response, err
 	}
 
-	numberLookupResponse = new(NumberLookupResponse)
-	err = json.Unmarshal(res, numberLookupResponse)
+	response = new(numberLookupResponse)
+	err = json.Unmarshal(res, response)
 
-	numberLookupResponse.rawResponse = string(res)
-	return numberLookupResponse, err
+	response.rawResponse = string(res)
+	return response, err
 }

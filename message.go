@@ -5,22 +5,22 @@ import (
 	"net/url"
 )
 
-type MessageService struct {
-	client           *Mocean
+type messageService struct {
+	client           *mocean
 	smsUrl           string
 	messageStatusUrl string
 }
 
 //Message constructor
-func (mocean *Mocean) Message() *MessageService {
-	return &MessageService{
-		mocean,
+func (m *mocean) Message() *messageService {
+	return &messageService{
+		m,
 		"/sms",
 		"/report/message",
 	}
 }
 
-type SmsResponse struct {
+type smsResponse struct {
 	abstractResponse
 	Messages []struct {
 		Status   interface{} `json:"status"`
@@ -31,20 +31,20 @@ type SmsResponse struct {
 
 //Send SMS
 //For more info, see docs: https://moceanapi.com/docs/#send-sms
-func (s *MessageService) Send(params url.Values) (smsResponse *SmsResponse, err error) {
+func (s *messageService) Send(params url.Values) (response *smsResponse, err error) {
 	res, err := s.client.post(s.smsUrl, params)
 	if err != nil {
-		return smsResponse, err
+		return response, err
 	}
 
-	smsResponse = new(SmsResponse)
-	err = json.Unmarshal(res, smsResponse)
+	response = new(smsResponse)
+	err = json.Unmarshal(res, response)
 
-	smsResponse.rawResponse = string(res)
-	return smsResponse, err
+	response.rawResponse = string(res)
+	return response, err
 }
 
-type MsgStatusResponse struct {
+type msgStatusResponse struct {
 	abstractResponse
 	MessageStatus  interface{} `json:"message_status"`
 	Msgid          interface{} `json:"msgid"`
@@ -53,15 +53,15 @@ type MsgStatusResponse struct {
 
 //Get Message Status
 //For more info, see docs: https://moceanapi.com/docs/#message-status
-func (s *MessageService) GetMessageStatus(params url.Values) (msgStatusResponse *MsgStatusResponse, err error) {
+func (s *messageService) GetMessageStatus(params url.Values) (response *msgStatusResponse, err error) {
 	res, err := s.client.get(s.messageStatusUrl, params)
 	if err != nil {
-		return msgStatusResponse, err
+		return response, err
 	}
 
-	msgStatusResponse = new(MsgStatusResponse)
-	err = json.Unmarshal(res, msgStatusResponse)
+	response = new(msgStatusResponse)
+	err = json.Unmarshal(res, response)
 
-	msgStatusResponse.rawResponse = string(res)
-	return msgStatusResponse, err
+	response.rawResponse = string(res)
+	return response, err
 }

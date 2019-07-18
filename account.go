@@ -5,42 +5,42 @@ import (
 	"net/url"
 )
 
-type AccountService struct {
-	client     *Mocean
+type accountService struct {
+	client     *mocean
 	balanceUrl string
 	pricingUrl string
 }
 
 //Account Constructor
-func (mocean *Mocean) Account() *AccountService {
-	return &AccountService{
-		mocean,
+func (m *mocean) Account() *accountService {
+	return &accountService{
+		m,
 		"/account/balance",
 		"/account/pricing",
 	}
 }
 
-type BalanceResponse struct {
+type balanceResponse struct {
 	abstractResponse
 	Value interface{} `json:"value"`
 }
 
 //Get Account Balance
 //For more info, see docs: https://moceanapi.com/docs/#get-balance
-func (s *AccountService) GetBalance(params url.Values) (balanceResponse *BalanceResponse, err error) {
+func (s *accountService) GetBalance(params url.Values) (response *balanceResponse, err error) {
 	res, err := s.client.get(s.balanceUrl, params)
 	if err != nil {
-		return balanceResponse, err
+		return response, err
 	}
 
-	balanceResponse = new(BalanceResponse)
-	err = json.Unmarshal(res, balanceResponse)
+	response = new(balanceResponse)
+	err = json.Unmarshal(res, response)
 
-	balanceResponse.rawResponse = string(res)
-	return balanceResponse, err
+	response.rawResponse = string(res)
+	return response, err
 }
 
-type PricingResponse struct {
+type pricingResponse struct {
 	abstractResponse
 	Destinations []struct {
 		Country  interface{} `json:"country"`
@@ -54,15 +54,15 @@ type PricingResponse struct {
 
 //Get Account Pricing
 //For more info, see docs: https://moceanapi.com/docs/#account-pricing
-func (s *AccountService) GetPricing(params url.Values) (pricingResponse *PricingResponse, err error) {
+func (s *accountService) GetPricing(params url.Values) (response *pricingResponse, err error) {
 	res, err := s.client.get(s.pricingUrl, params)
 	if err != nil {
-		return pricingResponse, err
+		return response, err
 	}
 
-	pricingResponse = new(PricingResponse)
-	err = json.Unmarshal(res, pricingResponse)
+	response = new(pricingResponse)
+	err = json.Unmarshal(res, response)
 
-	pricingResponse.rawResponse = string(res)
-	return pricingResponse, err
+	response.rawResponse = string(res)
+	return response, err
 }
