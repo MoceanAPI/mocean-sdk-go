@@ -2,7 +2,6 @@ package moceansdk
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,17 +10,20 @@ import (
 	"time"
 )
 
+//SdkVersion
 func SdkVersion() string {
 	return "2.0.2"
 }
 
+//Options
 type Options struct {
-	BaseUrl    string
+	BaseURL    string
 	Version    string
-	HttpClient *http.Client
+	HTTPClient *http.Client
 }
 
-type mocean struct {
+//Mocean
+type Mocean struct {
 	Options   *Options
 	apiKey    string
 	apiSecret string
@@ -41,12 +43,12 @@ type errorResponse struct {
 	ErrorMsg interface{} `json:"err_msg"`
 }
 
-func NewMoceanClient(apiKey, apiSecret string) *mocean {
-	return &mocean{
+func NewMoceanClient(apiKey, apiSecret string) *Mocean {
+	return &Mocean{
 		Options: &Options{
-			BaseUrl: "https://rest.moceanapi.com",
+			BaseURL: "https://rest.moceanapi.com",
 			Version: "2",
-			HttpClient: &http.Client{
+			HTTPClient: &http.Client{
 				Timeout: time.Second * 30,
 			},
 		},
@@ -55,29 +57,29 @@ func NewMoceanClient(apiKey, apiSecret string) *mocean {
 	}
 }
 
-func (m *mocean) post(url string, formData url.Values) ([]byte, error) {
+func (m *Mocean) post(url string, formData url.Values) ([]byte, error) {
 	return m.makeRequest("POST", url, formData)
 }
 
-func (m *mocean) get(url string, formData url.Values) ([]byte, error) {
+func (m *Mocean) get(url string, formData url.Values) ([]byte, error) {
 	return m.makeRequest("GET", url, formData)
 }
 
-func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]byte, error) {
+func (m *Mocean) makeRequest(method string, url string, formData url.Values) ([]byte, error) {
 	formData = m.setAuth(formData)
 
 	var req *http.Request
 	var newRequestErr error
 	if method == "GET" {
-		req, newRequestErr = http.NewRequest(method, m.Options.BaseUrl+"/rest/"+m.Options.Version+url+"?"+formData.Encode(), nil)
+		req, newRequestErr = http.NewRequest(method, m.Options.BaseURL+"/rest/"+m.Options.Version+url+"?"+formData.Encode(), nil)
 	} else {
-		req, newRequestErr = http.NewRequest(method, m.Options.BaseUrl+"/rest/"+m.Options.Version+url, strings.NewReader(formData.Encode()))
+		req, newRequestErr = http.NewRequest(method, m.Options.BaseURL+"/rest/"+m.Options.Version+url, strings.NewReader(formData.Encode()))
 	}
 	if newRequestErr != nil {
 		return nil, newRequestErr
 	}
 
-	res, err := m.Options.HttpClient.Do(req)
+	res, err := m.Options.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -94,13 +96,13 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 		errRes := new(errorResponse)
 		err = json.Unmarshal(responseBody, errRes)
 
-		return nil, errors.New(fmt.Sprintf("%v", errRes.ErrorMsg))
+		return nil, fmt.Errorf("%v", errRes.ErrorMsg)
 	}
 
 	return responseBody, nil
 }
 
-func (m *mocean) setAuth(data url.Values) url.Values {
+func (m *Mocean) setAuth(data url.Values) url.Values {
 	data.Set("mocean-api-key", m.apiKey)
 	data.Set("mocean-api-secret", m.apiSecret)
 	data.Set("mocean-resp-format", "JSON")

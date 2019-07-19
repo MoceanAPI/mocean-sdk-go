@@ -6,12 +6,12 @@ import (
 )
 
 type numberLookupService struct {
-	client          *mocean
-	numberLookupUrl string
+	client          *Mocean
+	numberLookupURL string
 }
 
 //Number Lookup Constructor
-func (m *mocean) NumberLookup() *numberLookupService {
+func (m *Mocean) NumberLookup() *numberLookupService {
 	return &numberLookupService{
 		m,
 		"/nl",
@@ -39,7 +39,7 @@ type numberLookupResponse struct {
 //Request Number Lookup
 //For more info, see docs: https://moceanapi.com/docs/#request-number-lookup
 func (s *numberLookupService) Inquiry(params url.Values) (response *numberLookupResponse, err error) {
-	res, err := s.client.post(s.numberLookupUrl, params)
+	res, err := s.client.post(s.numberLookupURL, params)
 	if err != nil {
 		return response, err
 	}

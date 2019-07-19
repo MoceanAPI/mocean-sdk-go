@@ -6,12 +6,12 @@ import (
 )
 
 type voiceService struct {
-	client   *mocean
-	voiceUrl string
+	client   *Mocean
+	voiceURL string
 }
 
 //Voice Constructor
-func (m *mocean) Voice() *voiceService {
+func (m *Mocean) Voice() *voiceService {
 	return &voiceService{
 		m,
 		"/voice/dial",
@@ -20,14 +20,14 @@ func (m *mocean) Voice() *voiceService {
 
 type voiceResponse struct {
 	abstractResponse
-	SessionUuid interface{} `json:"session-uuid"`
-	CallUuid    interface{} `json:"call-uuid"`
+	SessionUUID interface{} `json:"session-uuid"`
+	CallUUID    interface{} `json:"call-uuid"`
 }
 
 //Voice
 //For more info, see docs: https://moceanapi.com/docs/#voice
 func (s *voiceService) Call(params url.Values) (response *voiceResponse, err error) {
-	res, err := s.client.get(s.voiceUrl, params)
+	res, err := s.client.get(s.voiceURL, params)
 	if err != nil {
 		return response, err
 	}

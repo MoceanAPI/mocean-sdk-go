@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-var _mocean *mocean
+var _mocean *Mocean
 
 func TestMain(m *testing.M) {
 	os.Exit(func() int {
@@ -75,7 +75,7 @@ func TestInvalidMethod(t *testing.T) {
 }
 
 func TestHttpClientError(t *testing.T) {
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+"/test",
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+"/test",
 		httpmock.NewErrorResponder(errors.New("timeout")))
 
 	_, err := _mocean.makeRequest("GET", "/test", url.Values{})

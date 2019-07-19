@@ -9,7 +9,7 @@ import (
 
 func TestAccountService_GetBalance(t *testing.T) {
 	balRes := ReadResourceFile("price.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Account().balanceUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Account().balanceURL,
 		httpmock.NewStringResponder(http.StatusAccepted, balRes))
 
 	res, err := _mocean.Account().GetBalance(url.Values{})
@@ -19,7 +19,7 @@ func TestAccountService_GetBalance(t *testing.T) {
 
 func TestAccountService_GetBalanceError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Account().balanceUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Account().balanceURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Account().GetBalance(url.Values{})
@@ -29,7 +29,7 @@ func TestAccountService_GetBalanceError(t *testing.T) {
 
 func TestAccountService_GetPricing(t *testing.T) {
 	priceRes := ReadResourceFile("price.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Account().pricingUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Account().pricingURL,
 		httpmock.NewStringResponder(http.StatusAccepted, priceRes))
 
 	res, err := _mocean.Account().GetPricing(url.Values{})
@@ -39,7 +39,7 @@ func TestAccountService_GetPricing(t *testing.T) {
 
 func TestAccountService_GetPricingError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Account().pricingUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Account().pricingURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Account().GetPricing(url.Values{})

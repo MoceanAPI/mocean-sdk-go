@@ -9,7 +9,7 @@ import (
 
 func TestVoiceService_Call(t *testing.T) {
 	voiceRes := ReadResourceFile("voice.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Voice().voiceUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().voiceURL,
 		httpmock.NewStringResponder(http.StatusAccepted, voiceRes))
 
 	res, err := _mocean.Voice().Call(url.Values{})
@@ -19,7 +19,7 @@ func TestVoiceService_Call(t *testing.T) {
 
 func TestVoiceService_CallError(t *testing.T) {
 	voiceRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Voice().voiceUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().voiceURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, voiceRes))
 
 	_, err := _mocean.Voice().Call(url.Values{})

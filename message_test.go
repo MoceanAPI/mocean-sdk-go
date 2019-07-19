@@ -9,7 +9,7 @@ import (
 
 func TestMessageService_GetMessageStatus(t *testing.T) {
 	msgStatusRes := ReadResourceFile("message_status.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Message().messageStatusUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Message().messageStatusURL,
 		httpmock.NewStringResponder(http.StatusAccepted, msgStatusRes))
 
 	res, err := _mocean.Message().GetMessageStatus(url.Values{})
@@ -19,7 +19,7 @@ func TestMessageService_GetMessageStatus(t *testing.T) {
 
 func TestMessageService_GetMessageStatusError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Message().messageStatusUrl,
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Message().messageStatusURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Message().GetMessageStatus(url.Values{})
@@ -29,7 +29,7 @@ func TestMessageService_GetMessageStatusError(t *testing.T) {
 
 func TestMessageService_Send(t *testing.T) {
 	msgRes := ReadResourceFile("message.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Message().smsUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Message().smsURL,
 		httpmock.NewStringResponder(http.StatusAccepted, msgRes))
 
 	res, err := _mocean.Message().Send(url.Values{})
@@ -39,7 +39,7 @@ func TestMessageService_Send(t *testing.T) {
 
 func TestMessageService_SendError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Message().smsUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Message().smsURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Message().Send(url.Values{})

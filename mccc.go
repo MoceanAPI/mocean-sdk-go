@@ -5,26 +5,30 @@ import (
 	"reflect"
 )
 
+//McccBridge
 type McccBridge struct {
 	Action string `json:"action"`
 	To     string `json:"to"`
 }
 
+//McccCollect
 type McccCollect struct {
 	Action      string `json:"action"`
-	EventUrl    string `json:"event-url"`
+	EventURL    string `json:"event-url"`
 	Min         int    `json:"min"`
 	Max         int    `json:"max"`
 	Terminators string `json:"terminators"`
 	Timeout     int    `json:"timeout"`
 }
 
+//McccPlay
 type McccPlay struct {
 	Action  string `json:"action"`
 	File    string `json:"file"`
 	BargeIn bool   `json:"barge-in"`
 }
 
+//McccSay
 type McccSay struct {
 	Action   string `json:"action"`
 	Language string `json:"language"`
@@ -32,6 +36,7 @@ type McccSay struct {
 	BargeIn  bool   `json:"barge-in"`
 }
 
+//McccSleep
 type McccSleep struct {
 	Action   string `json:"action"`
 	Duration int    `json:"duration"`
@@ -39,6 +44,7 @@ type McccSleep struct {
 }
 
 // simple interface to make mccc
+//MakeMcccBridge
 func MakeMcccBridge(to string) *McccBridge {
 	return &McccBridge{
 		"dial",
@@ -46,10 +52,11 @@ func MakeMcccBridge(to string) *McccBridge {
 	}
 }
 
-func MakeMcccCollect(eventUrl string) *McccCollect {
+//MakeMcccCollect
+func MakeMcccCollect(eventURL string) *McccCollect {
 	return &McccCollect{
 		"collect",
-		eventUrl,
+		eventURL,
 		1,
 		10,
 		"#",
@@ -57,6 +64,7 @@ func MakeMcccCollect(eventUrl string) *McccCollect {
 	}
 }
 
+//MakeMcccPlay
 func MakeMcccPlay(file string) *McccPlay {
 	return &McccPlay{
 		Action: "play",
@@ -64,6 +72,7 @@ func MakeMcccPlay(file string) *McccPlay {
 	}
 }
 
+//MakeMcccSay
 func MakeMcccSay(text string) *McccSay {
 	return &McccSay{
 		Action:   "say",
@@ -72,6 +81,7 @@ func MakeMcccSay(text string) *McccSay {
 	}
 }
 
+//MakeMcccSleep
 func MakeMcccSleep(duration int) *McccSleep {
 	return &McccSleep{
 		Action:   "sleep",
@@ -80,15 +90,16 @@ func MakeMcccSleep(duration int) *McccSleep {
 }
 
 // builder
-type mcccBuilderService struct {
+type McccBuilderService struct {
 	mcccObjects []interface{}
 }
 
-func NewMcccBuilder() *mcccBuilderService {
-	return &mcccBuilderService{}
+//NewMcccBuilder
+func NewMcccBuilder() *McccBuilderService {
+	return &McccBuilderService{}
 }
 
-func (s *mcccBuilderService) Add(mccc interface{}) *mcccBuilderService {
+func (s *McccBuilderService) Add(mccc interface{}) *McccBuilderService {
 	mcccType := reflect.TypeOf(mccc)
 	if mcccType == reflect.TypeOf(&McccBridge{}) {
 		mcccBridge := mccc.(*McccBridge)
@@ -114,7 +125,7 @@ func (s *mcccBuilderService) Add(mccc interface{}) *mcccBuilderService {
 	return s
 }
 
-func (s *mcccBuilderService) Build() (string, error) {
+func (s *McccBuilderService) Build() (string, error) {
 	converted, err := json.Marshal(s.mcccObjects)
 	return string(converted), err
 }

@@ -7,9 +7,9 @@ import (
 )
 
 type verifyService struct {
-	client        *mocean
-	sendCodeUrl   string
-	verifyCodeUrl string
+	client        *Mocean
+	sendCodeURL   string
+	verifyCodeURL string
 	channel       string
 	isResend      bool
 }
@@ -20,7 +20,7 @@ func (s *verifyService) SendAs(channel string) *verifyService {
 }
 
 //Verify Constructor
-func (m *mocean) Verify() *verifyService {
+func (m *Mocean) Verify() *verifyService {
 	return &verifyService{
 		m,
 		"/verify",
@@ -40,19 +40,19 @@ type sendCodeResponse struct {
 //Send verify code
 //For more info, see docs: https://moceanapi.com/docs/#send-code
 func (s *verifyService) SendCode(params url.Values) (response *sendCodeResponse, err error) {
-	sendCodeUrl := s.sendCodeUrl
+	sendCodeURL := s.sendCodeURL
 
 	if s.isResend == true {
-		sendCodeUrl += "/resend"
+		sendCodeURL += "/resend"
 	} else {
-		sendCodeUrl += "/req"
+		sendCodeURL += "/req"
 	}
 
 	if strings.EqualFold(s.channel, "sms") {
-		sendCodeUrl += "/sms"
+		sendCodeURL += "/sms"
 	}
 
-	res, err := s.client.post(sendCodeUrl, params)
+	res, err := s.client.post(sendCodeURL, params)
 	if err != nil {
 		return response, err
 	}
@@ -72,7 +72,7 @@ type verifyCodeResponse struct {
 //Verify code
 //For more info, see docs: https://moceanapi.com/docs/#verify-code
 func (s *verifyService) VerifyCode(params url.Values) (response *verifyCodeResponse, err error) {
-	res, err := s.client.post(s.verifyCodeUrl, params)
+	res, err := s.client.post(s.verifyCodeURL, params)
 	if err != nil {
 		return response, err
 	}
