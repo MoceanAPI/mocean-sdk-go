@@ -2,6 +2,7 @@ package moceansdk
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
 	"io/ioutil"
 	"net/url"
@@ -30,7 +31,7 @@ func ReadResourceFile(fileName string) string {
 }
 
 func AssertEqual(t *testing.T, expected interface{}, actual interface{}) {
-	if expected != actual {
+	if !cmp.Equal(expected, actual) {
 		t.Errorf("failed to assert that two things are equals.\nExpected : %v\nActual   : %v", expected, actual)
 	}
 }
