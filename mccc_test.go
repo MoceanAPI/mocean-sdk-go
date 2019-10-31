@@ -5,23 +5,19 @@ import (
 	"testing"
 )
 
-func TestMakeMcccBridge(t *testing.T) {
-	expectedBridge := &McccBridge{
-		"dial",
-		"test to",
+func TestMakeMcccDial(t *testing.T) {
+	expectedDial := &McccDial{
+		Action: "dial",
+		To:     "test to",
 	}
 
-	AssertEqual(t, expectedBridge, MakeMcccBridge("test to"))
+	AssertEqual(t, expectedDial, MakeMcccDial("test to"))
 }
 
 func TestMakeMcccCollect(t *testing.T) {
 	expectedCollect := &McccCollect{
-		"collect",
-		"http://test.com",
-		1,
-		10,
-		"#",
-		5000,
+		Action:   "collect",
+		EventURL: "http://test.com",
 	}
 
 	AssertEqual(t, expectedCollect, MakeMcccCollect("http://test.com"))
@@ -29,9 +25,8 @@ func TestMakeMcccCollect(t *testing.T) {
 
 func TestMakeMcccPlay(t *testing.T) {
 	expectedPlay := &McccPlay{
-		"play",
-		"http://test.com",
-		false,
+		Action: "play",
+		File:   "http://test.com",
 	}
 
 	AssertEqual(t, expectedPlay, MakeMcccPlay("http://test.com"))
@@ -39,10 +34,9 @@ func TestMakeMcccPlay(t *testing.T) {
 
 func TestMakeMcccSay(t *testing.T) {
 	expectedSay := &McccSay{
-		"say",
-		"en-US",
-		"testing text",
-		false,
+		Action:   "say",
+		Language: "en-US",
+		Text:     "testing text",
 	}
 
 	AssertEqual(t, expectedSay, MakeMcccSay("testing text"))
@@ -50,9 +44,8 @@ func TestMakeMcccSay(t *testing.T) {
 
 func TestMakeMcccSleep(t *testing.T) {
 	expectedSleep := &McccSleep{
-		"sleep",
-		5000,
-		false,
+		Action:   "sleep",
+		Duration: 5000,
 	}
 
 	AssertEqual(t, expectedSleep, MakeMcccSleep(5000))
@@ -61,13 +54,13 @@ func TestMakeMcccSleep(t *testing.T) {
 func TestMcccBuilderService(t *testing.T) {
 	mcccBuilder := NewMcccBuilder()
 
-	expected := []interface{}{MakeMcccBridge("test to")}
-	mcccBuilder.Add(MakeMcccBridge("test to"))
-	expectedBridge, err := json.Marshal(expected)
+	expected := []interface{}{MakeMcccDial("test to")}
+	mcccBuilder.Add(MakeMcccDial("test to"))
+	expectedDial, err := json.Marshal(expected)
 	AssertNoError(t, err)
-	actualBridge, err := mcccBuilder.Build()
+	actualDial, err := mcccBuilder.Build()
 	AssertNoError(t, err)
-	AssertEqual(t, string(expectedBridge), actualBridge)
+	AssertEqual(t, string(expectedDial), actualDial)
 
 	expected = append(expected, MakeMcccCollect("http://test.com"))
 	mcccBuilder.Add(MakeMcccCollect("http://test.com"))

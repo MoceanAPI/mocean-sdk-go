@@ -5,10 +5,12 @@ import (
 	"reflect"
 )
 
-//McccBridge
-type McccBridge struct {
-	Action string `json:"action"`
-	To     string `json:"to"`
+//McccDial
+type McccDial struct {
+	Action           string `json:"action"`
+	To               string `json:"to"`
+	From             string `json:"from"`
+	DialSequentially bool   `json:"dial-sequentially"`
 }
 
 //McccCollect
@@ -23,44 +25,46 @@ type McccCollect struct {
 
 //McccPlay
 type McccPlay struct {
-	Action  string `json:"action"`
-	File    string `json:"file"`
-	BargeIn bool   `json:"barge-in"`
+	Action          string `json:"action"`
+	File            string `json:"file"`
+	BargeIn         bool   `json:"barge-in"`
+	ClearDigitCache bool   `json:"clear-digit-cache"`
 }
 
 //McccSay
 type McccSay struct {
-	Action   string `json:"action"`
-	Language string `json:"language"`
-	Text     string `json:"text"`
-	BargeIn  bool   `json:"barge-in"`
+	Action          string `json:"action"`
+	Language        string `json:"language"`
+	Text            string `json:"text"`
+	BargeIn         bool   `json:"barge-in"`
+	ClearDigitCache bool   `json:"clear-digit-cache"`
 }
 
 //McccSleep
 type McccSleep struct {
 	Action   string `json:"action"`
 	Duration int    `json:"duration"`
-	BargeIn  bool   `json:"barge-in"`
+}
+
+//McccRecord
+type McccRecord struct {
+	Action string `json:"action"`
 }
 
 // simple interface to make mccc
-//MakeMcccBridge
-func MakeMcccBridge(to string) *McccBridge {
-	return &McccBridge{
-		"dial",
-		to,
+//MakeMcccDial
+func MakeMcccDial(to string) *McccDial {
+	return &McccDial{
+		Action: "dial",
+		To:     to,
 	}
 }
 
 //MakeMcccCollect
 func MakeMcccCollect(eventURL string) *McccCollect {
 	return &McccCollect{
-		"collect",
-		eventURL,
-		1,
-		10,
-		"#",
-		5000,
+		Action:   "collect",
+		EventURL: eventURL,
 	}
 }
 
@@ -89,6 +93,13 @@ func MakeMcccSleep(duration int) *McccSleep {
 	}
 }
 
+//MakeMcccRecord
+func MakeMcccRecord() *McccRecord {
+	return &McccRecord{
+		Action: "record",
+	}
+}
+
 // builder
 type McccBuilderService struct {
 	mcccObjects []interface{}
@@ -101,10 +112,10 @@ func NewMcccBuilder() *McccBuilderService {
 
 func (s *McccBuilderService) Add(mccc interface{}) *McccBuilderService {
 	mcccType := reflect.TypeOf(mccc)
-	if mcccType == reflect.TypeOf(&McccBridge{}) {
-		mcccBridge := mccc.(*McccBridge)
-		mcccBridge.Action = "dial"
-		s.mcccObjects = append(s.mcccObjects, mcccBridge)
+	if mcccType == reflect.TypeOf(&McccDial{}) {
+		mcccDial := mccc.(*McccDial)
+		mcccDial.Action = "dial"
+		s.mcccObjects = append(s.mcccObjects, mcccDial)
 	} else if mcccType == reflect.TypeOf(&McccCollect{}) {
 		mcccCollect := mccc.(*McccCollect)
 		mcccCollect.Action = "collect"

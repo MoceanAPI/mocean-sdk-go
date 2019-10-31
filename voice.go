@@ -27,7 +27,7 @@ type voiceResponse struct {
 //Voice
 //For more info, see docs: https://moceanapi.com/docs/#voice
 func (s *voiceService) Call(params url.Values) (response *voiceResponse, err error) {
-	res, err := s.client.get(s.voiceURL, params)
+	res, err := s.client.post(s.voiceURL, params)
 	if err != nil {
 		return response, err
 	}
