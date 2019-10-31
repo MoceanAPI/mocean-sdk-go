@@ -132,6 +132,10 @@ func (s *McccBuilderService) Add(mccc interface{}) *McccBuilderService {
 		mcccSleep := mccc.(*McccSleep)
 		mcccSleep.Action = "sleep"
 		s.mcccObjects = append(s.mcccObjects, mcccSleep)
+	} else if mcccType == reflect.TypeOf(&McccRecord{}) {
+		mcccRecord := mccc.(*McccRecord)
+		mcccRecord.Action = "record"
+		s.mcccObjects = append(s.mcccObjects, mcccRecord)
 	}
 	return s
 }

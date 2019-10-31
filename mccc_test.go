@@ -51,6 +51,14 @@ func TestMakeMcccSleep(t *testing.T) {
 	AssertEqual(t, expectedSleep, MakeMcccSleep(5000))
 }
 
+func TestMakeMcccRecord(t *testing.T) {
+	expectedRecord := &McccRecord{
+		Action: "record",
+	}
+
+	AssertEqual(t, expectedRecord, MakeMcccRecord())
+}
+
 func TestMcccBuilderService(t *testing.T) {
 	mcccBuilder := NewMcccBuilder()
 
@@ -93,4 +101,12 @@ func TestMcccBuilderService(t *testing.T) {
 	actualSleep, err := mcccBuilder.Build()
 	AssertNoError(t, err)
 	AssertEqual(t, string(expectedSleep), actualSleep)
+
+	expected = append(expected, MakeMcccRecord())
+	mcccBuilder.Add(MakeMcccRecord())
+	expectedRecord, err := json.Marshal(expected)
+	AssertNoError(t, err)
+	actualRecord, err := mcccBuilder.Build()
+	AssertNoError(t, err)
+	AssertEqual(t, string(expectedRecord), actualRecord)
 }

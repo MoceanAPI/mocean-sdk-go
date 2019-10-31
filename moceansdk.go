@@ -88,7 +88,6 @@ func (m *Mocean) makeRequest(method string, url string, formData url.Values) ([]
 
 	responseBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("hi")
 		return nil, err
 	}
 
