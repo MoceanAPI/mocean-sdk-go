@@ -20,8 +20,12 @@ func (m *Mocean) Voice() *voiceService {
 
 type voiceResponse struct {
 	abstractResponse
-	SessionUUID interface{} `json:"session-uuid"`
-	CallUUID    interface{} `json:"call-uuid"`
+	Calls []struct {
+		Status      interface{} `json:"status"`
+		Receiver    interface{} `json:"receiver"`
+		SessionUUID interface{} `json:"session-uuid"`
+		CallUUID    interface{} `json:"call-uuid"`
+	} `json:"calls"`
 }
 
 //Voice
