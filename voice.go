@@ -6,12 +6,12 @@ import (
 )
 
 type voiceService struct {
-	client   *Mocean
+	client   *mocean
 	voiceURL string
 }
 
 //Voice Constructor
-func (m *Mocean) Voice() *voiceService {
+func (m *mocean) Voice() *voiceService {
 	return &voiceService{
 		m,
 		"/voice/dial",

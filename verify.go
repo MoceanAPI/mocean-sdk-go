@@ -7,7 +7,7 @@ import (
 )
 
 type verifyService struct {
-	client        *Mocean
+	client        *mocean
 	sendCodeURL   string
 	verifyCodeURL string
 	channel       string
@@ -20,7 +20,7 @@ func (s *verifyService) SendAs(channel string) *verifyService {
 }
 
 //Verify Constructor
-func (m *Mocean) Verify() *verifyService {
+func (m *mocean) Verify() *verifyService {
 	return &verifyService{
 		m,
 		"/verify",

@@ -6,12 +6,12 @@ import (
 )
 
 type numberLookupService struct {
-	client          *Mocean
+	client          *mocean
 	numberLookupURL string
 }
 
 //Number Lookup Constructor
-func (m *Mocean) NumberLookup() *numberLookupService {
+func (m *mocean) NumberLookup() *numberLookupService {
 	return &numberLookupService{
 		m,
 		"/nl",

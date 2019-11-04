@@ -16,15 +16,15 @@ func SdkVersion() string {
 }
 
 //Options
-type Options struct {
+type options struct {
 	BaseURL    string
 	Version    string
 	HTTPClient *http.Client
 }
 
 //Mocean
-type Mocean struct {
-	Options   *Options
+type mocean struct {
+	Options   *options
 	apiKey    string
 	apiSecret string
 }
@@ -43,9 +43,9 @@ type errorResponse struct {
 	ErrorMsg interface{} `json:"err_msg"`
 }
 
-func NewMoceanClient(apiKey, apiSecret string) *Mocean {
-	return &Mocean{
-		Options: &Options{
+func NewMoceanClient(apiKey, apiSecret string) *mocean {
+	return &mocean{
+		Options: &options{
 			BaseURL: "https://rest.moceanapi.com",
 			Version: "2",
 			HTTPClient: &http.Client{
@@ -57,15 +57,15 @@ func NewMoceanClient(apiKey, apiSecret string) *Mocean {
 	}
 }
 
-func (m *Mocean) post(url string, formData url.Values) ([]byte, error) {
+func (m *mocean) post(url string, formData url.Values) ([]byte, error) {
 	return m.makeRequest("POST", url, formData)
 }
 
-func (m *Mocean) get(url string, formData url.Values) ([]byte, error) {
+func (m *mocean) get(url string, formData url.Values) ([]byte, error) {
 	return m.makeRequest("GET", url, formData)
 }
 
-func (m *Mocean) makeRequest(method string, url string, formData url.Values) ([]byte, error) {
+func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]byte, error) {
 	formData = m.setAuth(formData)
 
 	var req *http.Request
@@ -101,7 +101,7 @@ func (m *Mocean) makeRequest(method string, url string, formData url.Values) ([]
 	return responseBody, nil
 }
 
-func (m *Mocean) setAuth(data url.Values) url.Values {
+func (m *mocean) setAuth(data url.Values) url.Values {
 	data.Set("mocean-api-key", m.apiKey)
 	data.Set("mocean-api-secret", m.apiSecret)
 	data.Set("mocean-resp-format", "JSON")

@@ -6,13 +6,13 @@ import (
 )
 
 type accountService struct {
-	client     *Mocean
+	client     *mocean
 	balanceURL string
 	pricingURL string
 }
 
 //Account Constructor
-func (m *Mocean) Account() *accountService {
+func (m *mocean) Account() *accountService {
 	return &accountService{
 		m,
 		"/account/balance",

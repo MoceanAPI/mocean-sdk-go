@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-var _mocean *Mocean
+var _mocean *mocean
 
 func TestMain(m *testing.M) {
 	os.Exit(func() int {

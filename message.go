@@ -6,13 +6,13 @@ import (
 )
 
 type messageService struct {
-	client           *Mocean
+	client           *mocean
 	smsURL           string
 	messageStatusURL string
 }
 
 //Message constructor
-func (m *Mocean) Message() *messageService {
+func (m *mocean) Message() *messageService {
 	return &messageService{
 		m,
 		"/sms",
