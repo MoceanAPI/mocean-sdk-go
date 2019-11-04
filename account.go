@@ -5,15 +5,15 @@ import (
 	"net/url"
 )
 
-type AccountService struct {
+type accountService struct {
 	client     *Mocean
 	balanceURL string
 	pricingURL string
 }
 
 //Account Constructor
-func (m *Mocean) Account() *AccountService {
-	return &AccountService{
+func (m *Mocean) Account() *accountService {
+	return &accountService{
 		m,
 		"/account/balance",
 		"/account/pricing",
@@ -27,7 +27,7 @@ type balanceResponse struct {
 
 //Get Account Balance
 //For more info, see docs: https://moceanapi.com/docs/#get-balance
-func (s *AccountService) GetBalance(params url.Values) (response *balanceResponse, err error) {
+func (s *accountService) GetBalance(params url.Values) (response *balanceResponse, err error) {
 	res, err := s.client.get(s.balanceURL, params)
 	if err != nil {
 		return response, err
@@ -54,7 +54,7 @@ type pricingResponse struct {
 
 //Get Account Pricing
 //For more info, see docs: https://moceanapi.com/docs/#account-pricing
-func (s *AccountService) GetPricing(params url.Values) (response *pricingResponse, err error) {
+func (s *accountService) GetPricing(params url.Values) (response *pricingResponse, err error) {
 	res, err := s.client.get(s.pricingURL, params)
 	if err != nil {
 		return response, err

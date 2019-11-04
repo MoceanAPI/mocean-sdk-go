@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-type VerifyService struct {
+type verifyService struct {
 	client        *Mocean
 	sendCodeURL   string
 	verifyCodeURL string
@@ -14,14 +14,14 @@ type VerifyService struct {
 	isResend      bool
 }
 
-func (s *VerifyService) SendAs(channel string) *VerifyService {
+func (s *verifyService) SendAs(channel string) *verifyService {
 	s.channel = channel
 	return s
 }
 
 //Verify Constructor
-func (m *Mocean) Verify() *VerifyService {
-	return &VerifyService{
+func (m *Mocean) Verify() *verifyService {
+	return &verifyService{
 		m,
 		"/verify",
 		"/verify/check",
@@ -39,7 +39,7 @@ type sendCodeResponse struct {
 
 //Send verify code
 //For more info, see docs: https://moceanapi.com/docs/#send-code
-func (s *VerifyService) SendCode(params url.Values) (response *sendCodeResponse, err error) {
+func (s *verifyService) SendCode(params url.Values) (response *sendCodeResponse, err error) {
 	sendCodeURL := s.sendCodeURL
 
 	if s.isResend == true {
@@ -71,7 +71,7 @@ type verifyCodeResponse struct {
 
 //Verify code
 //For more info, see docs: https://moceanapi.com/docs/#verify-code
-func (s *VerifyService) VerifyCode(params url.Values) (response *verifyCodeResponse, err error) {
+func (s *verifyService) VerifyCode(params url.Values) (response *verifyCodeResponse, err error) {
 	res, err := s.client.post(s.verifyCodeURL, params)
 	if err != nil {
 		return response, err
@@ -84,7 +84,7 @@ func (s *VerifyService) VerifyCode(params url.Values) (response *verifyCodeRespo
 	return response, err
 }
 
-func (s *VerifyService) Resend(params url.Values) (response *sendCodeResponse, err error) {
+func (s *verifyService) Resend(params url.Values) (response *sendCodeResponse, err error) {
 	s.SendAs("SMS")
 	s.isResend = true
 	return s.SendCode(params)

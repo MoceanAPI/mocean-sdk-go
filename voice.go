@@ -5,14 +5,14 @@ import (
 	"net/url"
 )
 
-type VoiceService struct {
+type voiceService struct {
 	client   *Mocean
 	voiceURL string
 }
 
 //Voice Constructor
-func (m *Mocean) Voice() *VoiceService {
-	return &VoiceService{
+func (m *Mocean) Voice() *voiceService {
+	return &voiceService{
 		m,
 		"/voice/dial",
 	}
@@ -30,7 +30,7 @@ type voiceResponse struct {
 
 //Voice
 //For more info, see docs: https://moceanapi.com/docs/#voice
-func (s *VoiceService) Call(params url.Values) (response *voiceResponse, err error) {
+func (s *voiceService) Call(params url.Values) (response *voiceResponse, err error) {
 	res, err := s.client.post(s.voiceURL, params)
 	if err != nil {
 		return response, err

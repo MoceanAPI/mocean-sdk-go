@@ -5,15 +5,15 @@ import (
 	"net/url"
 )
 
-type MessageService struct {
+type messageService struct {
 	client           *Mocean
 	smsURL           string
 	messageStatusURL string
 }
 
 //Message constructor
-func (m *Mocean) Message() *MessageService {
-	return &MessageService{
+func (m *Mocean) Message() *messageService {
+	return &messageService{
 		m,
 		"/sms",
 		"/report/message",
@@ -31,7 +31,7 @@ type smsResponse struct {
 
 //Send SMS
 //For more info, see docs: https://moceanapi.com/docs/#send-sms
-func (s *MessageService) Send(params url.Values) (response *smsResponse, err error) {
+func (s *messageService) Send(params url.Values) (response *smsResponse, err error) {
 	res, err := s.client.post(s.smsURL, params)
 	if err != nil {
 		return response, err
@@ -53,7 +53,7 @@ type msgStatusResponse struct {
 
 //Get Message Status
 //For more info, see docs: https://moceanapi.com/docs/#message-status
-func (s *MessageService) GetMessageStatus(params url.Values) (response *msgStatusResponse, err error) {
+func (s *messageService) GetMessageStatus(params url.Values) (response *msgStatusResponse, err error) {
 	res, err := s.client.get(s.messageStatusURL, params)
 	if err != nil {
 		return response, err
