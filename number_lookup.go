@@ -5,14 +5,14 @@ import (
 	"net/url"
 )
 
-type numberLookupService struct {
+type NumberLookupService struct {
 	client          *Mocean
 	numberLookupURL string
 }
 
 //Number Lookup Constructor
-func (m *Mocean) NumberLookup() *numberLookupService {
-	return &numberLookupService{
+func (m *Mocean) NumberLookup() *NumberLookupService {
+	return &NumberLookupService{
 		m,
 		"/nl",
 	}
@@ -38,7 +38,7 @@ type numberLookupResponse struct {
 
 //Request Number Lookup
 //For more info, see docs: https://moceanapi.com/docs/#request-number-lookup
-func (s *numberLookupService) Inquiry(params url.Values) (response *numberLookupResponse, err error) {
+func (s *NumberLookupService) Inquiry(params url.Values) (response *numberLookupResponse, err error) {
 	res, err := s.client.post(s.numberLookupURL, params)
 	if err != nil {
 		return response, err
