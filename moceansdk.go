@@ -78,6 +78,7 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 	if newRequestErr != nil {
 		return nil, newRequestErr
 	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	res, err := m.Options.HTTPClient.Do(req)
 	if err != nil {
@@ -91,14 +92,15 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 		return nil, err
 	}
 
-	if res.StatusCode != http.StatusAccepted {
-		errRes := new(errorResponse)
-		err = json.Unmarshal(responseBody, errRes)
-
-		return nil, fmt.Errorf("%v", errRes.ErrorMsg)
+	if res.StatusCode >= http.StatusOK && res.StatusCode < 300 {
+		return responseBody, nil
 	}
 
-	return responseBody, nil
+	//error response
+	errRes := new(errorResponse)
+	err = json.Unmarshal(responseBody, errRes)
+
+	return nil, fmt.Errorf("%v", errRes.ErrorMsg)
 }
 
 func (m *mocean) setAuth(data url.Values) url.Values {
