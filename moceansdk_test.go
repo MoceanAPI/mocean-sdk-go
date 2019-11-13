@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
+	"io"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -58,6 +59,14 @@ func AssertNoError(t *testing.T, err error) {
 	if err != nil {
 		t.Errorf("failed to assert that function call has no errors.\nError : %v", err)
 	}
+}
+
+func RewindBody(t *testing.T, body io.ReadCloser) url.Values {
+	bodyByte, err := ioutil.ReadAll(body)
+	AssertNoError(t, err)
+	parsedBody, err := url.ParseQuery(string(bodyByte))
+	AssertNoError(t, err)
+	return parsedBody
 }
 
 func TestKeySecretAuth(t *testing.T) {

@@ -29,8 +29,13 @@ func TestVoiceService_CallError(t *testing.T) {
 
 func TestVoiceService_Hangup(t *testing.T) {
 	hangupRes := ReadResourceFile("hangup.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().hangupURL+"/xxx-xxx-xxx-xxx",
-		httpmock.NewStringResponder(http.StatusAccepted, hangupRes))
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().hangupURL,
+		func(req *http.Request) (*http.Response, error) {
+			parsedBody := RewindBody(t, req.Body)
+			AssertEqual(t, parsedBody.Get("mocean-call-uuid"), "xxx-xxx-xxx-xxx")
+			return httpmock.NewStringResponse(http.StatusAccepted, hangupRes), nil
+		},
+	)
 
 	res, err := _mocean.Voice().Hangup("xxx-xxx-xxx-xxx")
 	AssertNoError(t, err)
@@ -38,9 +43,9 @@ func TestVoiceService_Hangup(t *testing.T) {
 }
 
 func TestVoiceService_HangupError(t *testing.T) {
-	voiceRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().hangupURL+"/xxx-xxx-xxx-xxx",
-		httpmock.NewStringResponder(http.StatusBadRequest, voiceRes))
+	hangupRes := ReadResourceFile("error_response.json")
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().hangupURL,
+		httpmock.NewStringResponder(http.StatusBadRequest, hangupRes))
 
 	_, err := _mocean.Voice().Hangup("xxx-xxx-xxx-xxx")
 	AssertError(t, err)

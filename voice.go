@@ -55,7 +55,7 @@ type hangupResponse struct {
 //Hangup
 //for more info, see docs: https://moceanapi.com/docs/#hangup-a-call
 func (s *voiceService) Hangup(callUuid string) (response *hangupResponse, err error) {
-	res, err := s.client.post(s.hangupURL+"/"+callUuid, url.Values{})
+	res, err := s.client.post(s.hangupURL, url.Values{"mocean-call-uuid": {callUuid}})
 	if err != nil {
 		return response, err
 	}
