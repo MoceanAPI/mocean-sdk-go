@@ -46,3 +46,24 @@ func TestVoiceService_HangupError(t *testing.T) {
 	AssertError(t, err)
 	AssertEqual(t, err.Error(), "Authorization failed")
 }
+
+func TestVoiceService_Recording(t *testing.T) {
+	recordingRes := ReadResourceFile("recording.json")
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().recordingURL,
+		httpmock.NewStringResponder(http.StatusAccepted, recordingRes))
+
+	res, err := _mocean.Voice().Recording("xxx-xxx-xxx-xxx")
+	AssertNoError(t, err)
+	AssertEqual(t, res.Filename, "xxx-xxx-xxx-xxx.mp3")
+	AssertNotNil(t, res.RecordingBuffer)
+}
+
+func TestVoiceService_RecordingError(t *testing.T) {
+	recordingRes := ReadResourceFile("error_response.json")
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Voice().recordingURL,
+		httpmock.NewStringResponder(http.StatusBadRequest, recordingRes))
+
+	_, err := _mocean.Voice().Recording("xxx-xxx-xxx-xxx")
+	AssertError(t, err)
+	AssertEqual(t, err.Error(), "Authorization failed")
+}

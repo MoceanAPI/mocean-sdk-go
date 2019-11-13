@@ -1,14 +1,16 @@
 package moceansdk
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/url"
 )
 
 type voiceService struct {
-	client    *mocean
-	voiceURL  string
-	hangupURL string
+	client       *mocean
+	voiceURL     string
+	hangupURL    string
+	recordingURL string
 }
 
 //Voice Constructor
@@ -17,6 +19,7 @@ func (m *mocean) Voice() *voiceService {
 		m,
 		"/voice/dial",
 		"/voice/hangup",
+		"/voice/rec",
 	}
 }
 
@@ -62,4 +65,23 @@ func (s *voiceService) Hangup(callUuid string) (response *hangupResponse, err er
 
 	response.rawResponse = string(res)
 	return response, err
+}
+
+type recordingResponse struct {
+	Filename        string
+	RecordingBuffer *bytes.Reader
+}
+
+//Recording
+//for more info, see docs: https://moceanapi.com/docs/#download-a-recording
+func (s *voiceService) Recording(callUuid string) (response *recordingResponse, err error) {
+	res, err := s.client.get(s.recordingURL, url.Values{"mocean-call-uuid": {callUuid}})
+	if err != nil {
+		return response, err
+	}
+
+	return &recordingResponse{
+		Filename:        callUuid + ".mp3",
+		RecordingBuffer: bytes.NewReader(res),
+	}, err
 }

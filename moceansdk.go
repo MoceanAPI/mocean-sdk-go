@@ -78,7 +78,10 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 	if newRequestErr != nil {
 		return nil, newRequestErr
 	}
-	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	if method == "POST" {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
 
 	res, err := m.Options.HTTPClient.Do(req)
 	if err != nil {
