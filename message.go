@@ -7,8 +7,8 @@ import (
 
 type messageService struct {
 	client           *mocean
-	smsUrl           string
-	messageStatusUrl string
+	smsURL           string
+	messageStatusURL string
 }
 
 //Message constructor
@@ -32,7 +32,7 @@ type smsResponse struct {
 //Send SMS
 //For more info, see docs: https://moceanapi.com/docs/#send-sms
 func (s *messageService) Send(params url.Values) (response *smsResponse, err error) {
-	res, err := s.client.post(s.smsUrl, params)
+	res, err := s.client.post(s.smsURL, params)
 	if err != nil {
 		return response, err
 	}
@@ -54,7 +54,7 @@ type msgStatusResponse struct {
 //Get Message Status
 //For more info, see docs: https://moceanapi.com/docs/#message-status
 func (s *messageService) GetMessageStatus(params url.Values) (response *msgStatusResponse, err error) {
-	res, err := s.client.get(s.messageStatusUrl, params)
+	res, err := s.client.get(s.messageStatusURL, params)
 	if err != nil {
 		return response, err
 	}

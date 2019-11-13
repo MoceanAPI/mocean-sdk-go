@@ -2,7 +2,9 @@ package moceansdk
 
 import (
 	"errors"
+	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
+	"io"
 	"io/ioutil"
 	"net/url"
 	"os"
@@ -30,7 +32,7 @@ func ReadResourceFile(fileName string) string {
 }
 
 func AssertEqual(t *testing.T, expected interface{}, actual interface{}) {
-	if expected != actual {
+	if !cmp.Equal(expected, actual) {
 		t.Errorf("failed to assert that two things are equals.\nExpected : %v\nActual   : %v", expected, actual)
 	}
 }
@@ -59,6 +61,14 @@ func AssertNoError(t *testing.T, err error) {
 	}
 }
 
+func RewindBody(t *testing.T, body io.ReadCloser) url.Values {
+	bodyByte, err := ioutil.ReadAll(body)
+	AssertNoError(t, err)
+	parsedBody, err := url.ParseQuery(string(bodyByte))
+	AssertNoError(t, err)
+	return parsedBody
+}
+
 func TestKeySecretAuth(t *testing.T) {
 	AssertEqual(t, "test api key", _mocean.apiKey)
 	AssertEqual(t, "test api secret", _mocean.apiSecret)
@@ -74,7 +84,7 @@ func TestInvalidMethod(t *testing.T) {
 }
 
 func TestHttpClientError(t *testing.T) {
-	httpmock.RegisterResponder("GET", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+"/test",
+	httpmock.RegisterResponder("GET", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+"/test",
 		httpmock.NewErrorResponder(errors.New("timeout")))
 
 	_, err := _mocean.makeRequest("GET", "/test", url.Values{})

@@ -9,7 +9,7 @@ import (
 
 func TestNumberLookupService_Inquiry(t *testing.T) {
 	numberLookupRes := ReadResourceFile("number_lookup.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.NumberLookup().numberLookupUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.NumberLookup().numberLookupURL,
 		httpmock.NewStringResponder(http.StatusAccepted, numberLookupRes))
 
 	res, err := _mocean.NumberLookup().Inquiry(url.Values{})
@@ -19,7 +19,7 @@ func TestNumberLookupService_Inquiry(t *testing.T) {
 
 func TestNumberLookupService_InquiryError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.NumberLookup().numberLookupUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.NumberLookup().numberLookupURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.NumberLookup().Inquiry(url.Values{})

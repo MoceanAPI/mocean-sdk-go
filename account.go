@@ -7,8 +7,8 @@ import (
 
 type accountService struct {
 	client     *mocean
-	balanceUrl string
-	pricingUrl string
+	balanceURL string
+	pricingURL string
 }
 
 //Account Constructor
@@ -28,7 +28,7 @@ type balanceResponse struct {
 //Get Account Balance
 //For more info, see docs: https://moceanapi.com/docs/#get-balance
 func (s *accountService) GetBalance(params url.Values) (response *balanceResponse, err error) {
-	res, err := s.client.get(s.balanceUrl, params)
+	res, err := s.client.get(s.balanceURL, params)
 	if err != nil {
 		return response, err
 	}
@@ -55,7 +55,7 @@ type pricingResponse struct {
 //Get Account Pricing
 //For more info, see docs: https://moceanapi.com/docs/#account-pricing
 func (s *accountService) GetPricing(params url.Values) (response *pricingResponse, err error) {
-	res, err := s.client.get(s.pricingUrl, params)
+	res, err := s.client.get(s.pricingURL, params)
 	if err != nil {
 		return response, err
 	}

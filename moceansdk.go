@@ -2,7 +2,6 @@ package moceansdk
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,18 +10,21 @@ import (
 	"time"
 )
 
+//SdkVersion
 func SdkVersion() string {
 	return "2.0.2"
 }
 
-type Options struct {
-	BaseUrl    string
+//Options
+type options struct {
+	BaseURL    string
 	Version    string
-	HttpClient *http.Client
+	HTTPClient *http.Client
 }
 
+//Mocean
 type mocean struct {
-	Options   *Options
+	Options   *options
 	apiKey    string
 	apiSecret string
 }
@@ -43,10 +45,10 @@ type errorResponse struct {
 
 func NewMoceanClient(apiKey, apiSecret string) *mocean {
 	return &mocean{
-		Options: &Options{
-			BaseUrl: "https://rest.moceanapi.com",
+		Options: &options{
+			BaseURL: "https://rest.moceanapi.com",
 			Version: "2",
-			HttpClient: &http.Client{
+			HTTPClient: &http.Client{
 				Timeout: time.Second * 30,
 			},
 		},
@@ -69,15 +71,19 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 	var req *http.Request
 	var newRequestErr error
 	if method == "GET" {
-		req, newRequestErr = http.NewRequest(method, m.Options.BaseUrl+"/rest/"+m.Options.Version+url+"?"+formData.Encode(), nil)
+		req, newRequestErr = http.NewRequest(method, m.Options.BaseURL+"/rest/"+m.Options.Version+url+"?"+formData.Encode(), nil)
 	} else {
-		req, newRequestErr = http.NewRequest(method, m.Options.BaseUrl+"/rest/"+m.Options.Version+url, strings.NewReader(formData.Encode()))
+		req, newRequestErr = http.NewRequest(method, m.Options.BaseURL+"/rest/"+m.Options.Version+url, strings.NewReader(formData.Encode()))
 	}
 	if newRequestErr != nil {
 		return nil, newRequestErr
 	}
 
-	res, err := m.Options.HttpClient.Do(req)
+	if method == "POST" {
+		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	}
+
+	res, err := m.Options.HTTPClient.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -86,18 +92,18 @@ func (m *mocean) makeRequest(method string, url string, formData url.Values) ([]
 
 	responseBody, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("hi")
 		return nil, err
 	}
 
-	if res.StatusCode != http.StatusAccepted {
-		errRes := new(errorResponse)
-		err = json.Unmarshal(responseBody, errRes)
-
-		return nil, errors.New(fmt.Sprintf("%v", errRes.ErrorMsg))
+	if res.StatusCode >= http.StatusOK && res.StatusCode < 300 {
+		return responseBody, nil
 	}
 
-	return responseBody, nil
+	//error response
+	errRes := new(errorResponse)
+	err = json.Unmarshal(responseBody, errRes)
+
+	return nil, fmt.Errorf("%v", errRes.ErrorMsg)
 }
 
 func (m *mocean) setAuth(data url.Values) url.Values {

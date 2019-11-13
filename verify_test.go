@@ -9,7 +9,7 @@ import (
 
 func TestVerifyService_SendCode(t *testing.T) {
 	sendCodeRes := ReadResourceFile("send_code.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeUrl+"/req",
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/req",
 		httpmock.NewStringResponder(http.StatusAccepted, sendCodeRes))
 
 	res, err := _mocean.Verify().SendCode(url.Values{})
@@ -22,7 +22,7 @@ func TestVerifyService_SendAsSmsChannel(t *testing.T) {
 	AssertEqual(t, verifySv.channel, "sms")
 
 	sendCodeRes := ReadResourceFile("send_code.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeUrl+"/req/sms",
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/req/sms",
 		httpmock.NewStringResponder(http.StatusAccepted, sendCodeRes))
 
 	res, err := verifySv.SendCode(url.Values{})
@@ -32,7 +32,7 @@ func TestVerifyService_SendAsSmsChannel(t *testing.T) {
 
 func TestVerifyService_Resend(t *testing.T) {
 	resendCodeRes := ReadResourceFile("resend_code.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeUrl+"/resend/sms",
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/resend/sms",
 		httpmock.NewStringResponder(http.StatusAccepted, resendCodeRes))
 
 	res, err := _mocean.Verify().Resend(url.Values{})
@@ -42,7 +42,7 @@ func TestVerifyService_Resend(t *testing.T) {
 
 func TestVerifyService_SendCodeError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeUrl+"/req",
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/req",
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Verify().SendCode(url.Values{})
@@ -52,7 +52,7 @@ func TestVerifyService_SendCodeError(t *testing.T) {
 
 func TestVerifyService_VerifyCode(t *testing.T) {
 	verifyCodeRes := ReadResourceFile("verify_code.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().verifyCodeUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().verifyCodeURL,
 		httpmock.NewStringResponder(http.StatusAccepted, verifyCodeRes))
 
 	res, err := _mocean.Verify().VerifyCode(url.Values{})
@@ -62,7 +62,7 @@ func TestVerifyService_VerifyCode(t *testing.T) {
 
 func TestVerifyService_VerifyCodeError(t *testing.T) {
 	errorRes := ReadResourceFile("error_response.json")
-	httpmock.RegisterResponder("POST", _mocean.Options.BaseUrl+"/rest/"+_mocean.Options.Version+_mocean.Verify().verifyCodeUrl,
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().verifyCodeURL,
 		httpmock.NewStringResponder(http.StatusBadRequest, errorRes))
 
 	_, err := _mocean.Verify().VerifyCode(url.Values{})
