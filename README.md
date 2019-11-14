@@ -35,6 +35,7 @@ mocean.Account().GetPricing()       //Get Account Pricing
 mocean.Verify().SendCode()          //Send Verify Code
 mocean.Verify().VerifyCode()        //Check Verify Code
 mocean.NumberLookup().Inquiry()     //Number Lookup
+mocean.Voice().Call()               //Voice Call
 ```
 
 ## Example
