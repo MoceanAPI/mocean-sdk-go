@@ -1,0 +1,12 @@
+{
+    "status": 0,
+    "session_uuid": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+    "mocean_command_resp": [
+        {
+            "action": "send-telegram",
+            "mc_position": 0,
+            "message_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+            "total_message_segments": 1
+        }
+    ]
+}
