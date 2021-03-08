@@ -50,6 +50,8 @@ func (s *verifyService) SendCode(params url.Values) (response *sendCodeResponse,
 
 	if strings.EqualFold(s.channel, "sms") {
 		sendCodeURL += "/sms"
+	} else if strings.EqualFold(s.channel, "telegram") {
+		sendCodeURL += "/telegram"
 	}
 
 	res, err := s.client.post(sendCodeURL, params)

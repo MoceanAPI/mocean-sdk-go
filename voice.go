@@ -28,8 +28,8 @@ type voiceResponse struct {
 	Calls []struct {
 		Status      interface{} `json:"status"`
 		Receiver    interface{} `json:"receiver"`
-		SessionUUID interface{} `json:"session-uuid"`
-		CallUUID    interface{} `json:"call-uuid"`
+		SessionUUID interface{} `json:"session_uuid"`
+		CallUUID    interface{} `json:"call_uuid"`
 	} `json:"calls"`
 }
 
