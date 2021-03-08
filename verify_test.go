@@ -30,6 +30,19 @@ func TestVerifyService_SendAsSmsChannel(t *testing.T) {
 	AssertEqual(t, res.String(), sendCodeRes)
 }
 
+func TestVerifyService_SendAsTelegramChannel(t *testing.T) {
+	verifySv := _mocean.Verify().SendAs("telegram")
+	AssertEqual(t, verifySv.channel, "telegram")
+
+	sendCodeRes := ReadResourceFile("send_code.json")
+	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/req/telegram",
+		httpmock.NewStringResponder(http.StatusAccepted, sendCodeRes))
+
+	res, err := verifySv.SendCode(url.Values{})
+	AssertNoError(t, err)
+	AssertEqual(t, res.String(), sendCodeRes)
+}
+
 func TestVerifyService_Resend(t *testing.T) {
 	resendCodeRes := ReadResourceFile("resend_code.json")
 	httpmock.RegisterResponder("POST", _mocean.Options.BaseURL+"/rest/"+_mocean.Options.Version+_mocean.Verify().sendCodeURL+"/resend/sms",
