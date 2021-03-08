@@ -12,7 +12,7 @@ import (
 
 //SdkVersion
 func SdkVersion() string {
-	return "2.1.1-rc"
+	return "2.1.1"
 }
 
 //Options
